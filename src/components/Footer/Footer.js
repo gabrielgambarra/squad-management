@@ -1,10 +1,11 @@
 import './Footer.scss';
+import { FooterContainer } from './FooterStyled';
 
 function Footer() {
     return(
-        <div>
-            Footer
-        </div>
+        <FooterContainer>
+            <small>2020 - All rights reserved</small>
+        </FooterContainer>
     );
 }
 
