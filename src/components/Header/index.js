@@ -1,4 +1,3 @@
-import './Header.scss';
 import { HeaderContainer, LogoContainer, UserContainer, Logo, UserPhoto } from './HeaderStyled';
 
 function Header() {

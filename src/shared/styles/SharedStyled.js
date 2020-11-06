@@ -25,5 +25,5 @@ export const SectionHeader = styled.div`
 export const SectionContent = styled.div`
     overflow: auto;
     padding: 1em;
-    max-height: 70vh;
+    max-height: ${props => props.scroll ? "70vh" : "unset"};
 `;
