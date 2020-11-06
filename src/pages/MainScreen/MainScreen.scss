@@ -1,0 +1,20 @@
+.right-column {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.picked-players-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-left: 0.83em;
+}
+
+@media only screen and (max-width: 560px) {
+    .picked-players-row {
+        width: unset;
+    }
+}

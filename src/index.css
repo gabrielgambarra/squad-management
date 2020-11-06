@@ -5,9 +5,42 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f7f3f7;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+* {
+  scrollbar-color: #c3c3c3 rgba(12, 12, 12, 0.1);
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  border-radius: 10px;
+  background: rgba(12, 12, 12, 0.1);
+  border: 0;
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: rgba(12, 12, 12, 0.02);
+  border: 0;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #aeaeae;
+  border: 0;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #8f8f8f;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: #8f8f8f;
 }
