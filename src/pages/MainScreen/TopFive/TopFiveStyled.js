@@ -14,11 +14,8 @@ export const TopFiveContainer = styled.div`
 export const TopFiveSide = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: #e9e3e8;
     width: 100%;
     margin: .5em;
-    border-radius: 15px;
-    padding: .5em;
 `;
 
 export const TopFiveTitle = styled.p`
@@ -31,6 +28,9 @@ export const TopFiveListContainer = styled.div`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    border-radius: 15px;
+    background-color: #e9e3e8;
+    padding: .1em .3em;
 `;
 
 export const TopFiveListItem = styled.div`

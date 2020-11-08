@@ -1,6 +1,7 @@
 import { NewTeamButton } from './MyTeamsStyled';
 import { SectionContainer, SectionHeader, SectionContent } from '../../../shared/styles/SharedStyled';
-import { MdAdd, MdDelete, MdShare, MdModeEdit } from 'react-icons/md';
+import { MdAdd } from 'react-icons/md';
+import Table from '../Table';
 
 function MyTeams() {
     return (
@@ -13,8 +14,8 @@ function MyTeams() {
                 </NewTeamButton>
             </SectionHeader>
 
-            <SectionContent>
-
+            <SectionContent scroll>
+                <Table />
             </SectionContent>
         </SectionContainer>
     );
