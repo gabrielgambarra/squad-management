@@ -45,3 +45,12 @@ code {
 *::-webkit-scrollbar-thumb:active {
   background: #8f8f8f;
 }
+
+.col {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+  width: 100%;
+}
