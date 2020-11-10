@@ -1,15 +1,25 @@
 import './TeamForm.scss';
-import AxiosInstance from '../../providers/services/Api';
+// import AxiosInstance from '../../providers/services/Api';
 import { SectionContainer, SectionContent, SectionHeader } from '../../shared/styles/SharedStyled';
 import { TeamFormContainer, TeamFormTitle, ChipInputStyled } from './TeamFormStyled';
 import { useState } from 'react';
 import _ from 'underscore';
 import { Chip } from '@material-ui/core';
-import { MdClose } from 'react-icons/md';
+import { MdAdd, MdClose } from 'react-icons/md';
+
+const positions = [
+    {
+        firstRow: 3,
+        seconnRow: 4,
+        thirdRow: 3,
+        id: '3-4-3'
+    }
+]
 
 function TeamForm() {
-
     const [tags, setTags] = useState([]);
+    const [pos, setPos] = useState(null);
+    const [tes, setTes] = useState(0);
 
     function addTeamTags(tag) {
         setTags([...tags, tag]);
@@ -17,6 +27,12 @@ function TeamForm() {
 
     function deleteTeamTag(tag) {
         setTags(_.without(tags, tag));
+    }
+
+    // _.times(3, function (n) { console.log(n) })
+
+    function onSelectFormation() {
+        setPos(positions[tes]);
     }
 
     return (
@@ -101,11 +117,60 @@ function TeamForm() {
                     <div className="team-info">
                         <TeamFormTitle>Configure Squard</TeamFormTitle>
 
+                        <div className="fields-row">
+                            <div className="col">
+                                <div className="input-container">
+                                    <label>Formation</label>
 
+                                </div>
+
+                                <div className="soccer-field">
+                                    <div className="row soccer-field-row">
+                                        {pos && _.times(pos.firstRow, (i) => {
+                                            return <div key={i} className="position-item">
+                                                <MdAdd style={{ color: '#fff' }} />
+                                            </div>
+                                        })}
+                                    </div>
+
+                                    <div className="row soccer-field-row">
+                                        {pos && _.times(pos.seconnRow, (i) => {
+                                            return <div key={i} className="position-item">
+                                                <MdAdd style={{ color: '#fff' }} />
+                                            </div>
+                                        })}
+                                    </div>
+
+                                    <div className="row soccer-field-row">
+                                        {pos && _.times(pos.thirdRow, (i) => {
+                                            return <div key={i} className="position-item">
+                                                <MdAdd style={{ color: '#fff' }} />
+                                            </div>
+                                        })}
+                                    </div>
+
+                                    <div className="row soccer-field-row">
+                                        {pos && <div className="position-item">{pos.view}</div>}
+
+                                    </div>
+                                </div>
+
+                                <div className="input-container">
+                                    <button onClick={onSelectFormation}>Save</button>
+                                </div>
+                            </div>
+
+                            <div className="col">
+                                <div className="input-container">
+                                    <label htmlFor="teamSearchPlayer">Search player</label>
+                                    <input name="teamSearchPlayer" id="teamSearchPlayer" placeholder="Ronal" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </SectionContent>
             </SectionContainer>
-        </TeamFormContainer>
+        </TeamFormContainer >
     );
 }
 

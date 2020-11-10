@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const MainScreenContainer = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     padding: 1em;
 
     @media(max-width: 945px) {
