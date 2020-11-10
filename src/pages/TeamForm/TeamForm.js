@@ -4,6 +4,8 @@ import { SectionContainer, SectionContent, SectionHeader } from '../../shared/st
 import { TeamFormContainer, TeamFormTitle, ChipInputStyled } from './TeamFormStyled';
 import { useState } from 'react';
 import _ from 'underscore';
+import { Chip } from '@material-ui/core';
+import { MdClose } from 'react-icons/md';
 
 function TeamForm() {
 
@@ -70,6 +72,26 @@ function TeamForm() {
                                         value={tags}
                                         onAdd={(chip) => addTeamTags(chip)}
                                         onDelete={(chip) => deleteTeamTag(chip)}
+                                        chipRenderer={({
+                                            value,
+                                            handleClick,
+                                            handleDelete
+                                        }, key) => (
+                                                <Chip
+                                                    key={key}
+                                                    style={{
+                                                        color: '#fff',
+                                                        backgroundColor: '#c50341',
+                                                        margin: '0 8px 8px 0'
+                                                    }}
+                                                    onClick={handleClick}
+                                                    onDelete={handleDelete}
+                                                    label={value}
+                                                    color="primary"
+                                                    deleteIcon={<MdClose />}
+                                                />
+                                            )
+                                        }
                                     />
                                 </div>
                             </div>
