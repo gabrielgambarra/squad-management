@@ -164,3 +164,19 @@
         }
     }
 }
+
+@media only screen and (max-width: 945px) {
+    .team-info {
+        padding: 0;
+    }
+}
+
+@media only screen and (max-width: 560px) {
+    .team-info {
+        .fields-row {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

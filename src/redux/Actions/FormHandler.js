@@ -6,4 +6,4 @@ export const pushForm = (data) => ({
 export const deleteTeam = (teamIndex) => ({
     type: 'DELETE_TEAM',
     teamIndex
-})
+});
