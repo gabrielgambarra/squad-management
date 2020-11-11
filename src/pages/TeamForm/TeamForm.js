@@ -6,6 +6,8 @@ import { useState } from 'react';
 import _ from 'underscore';
 import { Chip } from '@material-ui/core';
 import { MdAdd, MdClose } from 'react-icons/md';
+import { connect } from 'react-redux';
+import { FormHandler } from '../../redux/Actions';
 
 const formations = [
     {
@@ -80,11 +82,16 @@ const formations = [
     }
 ]
 
-function TeamForm() {
+function TeamForm(props) {
     const [tags, setTags] = useState([]);
     const [players, setPlayers] = useState([]);
     const [playerSearch, setPlayerSearch] = useState('');
     const [formation, setFormation] = useState(formations[0]);
+
+    const [teamName, setTeamName] = useState('');
+    const [teamDesc, setTeamDesc] = useState('');
+    const [teamWebSite, setTeamWebSite] = useState('');
+    const [teamType, setTeamType] = useState('');
 
     function addTeamTags(tag) {
         setTags([...tags, tag]);
@@ -114,6 +121,18 @@ function TeamForm() {
         setFormation(form);
     }
 
+    function save() {
+        const { pushForm } = props;
+
+        let teamData = {};
+
+        Object.assign(teamData, {teamName, teamDesc, teamWebSite, teamType, tags});
+
+        pushForm(teamData);
+
+        props.history.push('/');
+    }
+
     return (
         <TeamFormContainer>
 
@@ -130,30 +149,35 @@ function TeamForm() {
                             <div className="col">
                                 <div className="input-container">
                                     <label htmlFor="teamName">Team name</label>
-                                    <input name="teamName" id="teamName" placeholder="Insert team name" />
+                                    <input name="teamName" id="teamName" placeholder="Insert team name"
+                                        onChange={event => setTeamName(event.target.value)} value={teamName} />
                                 </div>
 
                                 <div className="input-container">
                                     <label htmlFor="teamDesc">Description</label>
-                                    <textarea id="teamDesc" name="teamDesc" rows="9"></textarea>
+                                    <textarea id="teamDesc" name="teamDesc" rows="9"
+                                        onChange={event => setTeamDesc(event.target.value)} value={teamDesc}></textarea>
                                 </div>
                             </div>
 
                             <div className="col">
                                 <div className="input-container">
                                     <label htmlFor="teamWebsite">Team website</label>
-                                    <input name="teamWebsite" id="teamWebsite" placeholder="http://myteam.com" />
+                                    <input name="teamWebsite" id="teamWebsite" placeholder="http://myteam.com"
+                                        onChange={event => setTeamWebSite(event.target.value)} value={teamWebSite} />
                                 </div>
 
                                 <div className="input-container">
                                     <label>Team type</label>
                                     <div>
                                         <div className="radio-item">
-                                            <input type="radio" id="typeRal" name="teamType" value="fantasy" />
+                                            <input type="radio" id="typeRal" name="teamType" value={teamType}
+                                                onChange={() => setTeamType("real")} />
                                             <label htmlFor="typeRal">Real</label>
                                         </div>
                                         <div className="radio-item">
-                                            <input type="radio" id="typeFantasy" name="teamType" value="real" />
+                                            <input type="radio" id="typeFantasy" name="teamType" value={teamType}
+                                                onChange={() => setTeamType("fantasy")} />
                                             <label htmlFor="typeFantasy">Fantasy</label>
                                         </div>
                                     </div>
@@ -233,7 +257,7 @@ function TeamForm() {
                                         })}
                                     </div>
 
-                                    {formation.fourthRow  > 0 &&
+                                    {formation.fourthRow > 0 &&
                                         <div className="row soccer-field-row">
                                             {formation && _.times(formation.fourthRow, (i) => {
                                                 return <div key={i} className="position-item">
@@ -251,7 +275,7 @@ function TeamForm() {
                                 </div>
 
                                 <div className="input-container">
-                                    <button>Save</button>
+                                    <button onClick={save}>Save</button>
                                 </div>
                             </div>
 
@@ -290,8 +314,12 @@ function TeamForm() {
                     </div>
                 </SectionContent>
             </SectionContainer>
-        </TeamFormContainer >
+        </TeamFormContainer>
     );
 }
 
-export default TeamForm;
+const mapDispatchToProps = (dispatch) => ({
+    pushForm: data => dispatch(FormHandler.pushForm(data))
+});
+
+export default connect(null, mapDispatchToProps)(TeamForm);

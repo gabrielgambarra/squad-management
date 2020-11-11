@@ -1,10 +1,12 @@
 import React from 'react';
 import './Table.scss';
 import { MdDelete, MdShare, MdModeEdit, MdArrowDropUp, MdArrowDropDown } from 'react-icons/md';
+import { connect } from 'react-redux';
+import { FormHandler } from '../../../redux/Actions';
 
 class Table extends React.Component {
     state = {
-        data: [],
+        teamData: [],
         sort: {
             column: null,
             direction: 'default',
@@ -12,25 +14,26 @@ class Table extends React.Component {
     };
 
     componentDidMount() {
-        // Stub data
-        const data = [];
+        const { data } = this.props;
+        this.setState({ teamData: data });
+    };
 
-        for (let i = 1; i < 11; i++) {
-            const teamName = `Account ${i}`;
-            const teamDescription = Math.floor(Math.random() * 1000000) + 10000;
-
-            data.push({
-                teamName,
-                teamDescription,
-            });
+    componentDidUpdate = (prevProps) => {
+        const { data } = this.props;
+        if (prevProps.data !== data) {
+            this.setState({ teamData: data });
         }
+    };
 
-        this.setState({ data });
+    deleteTeam(index) {
+        const { deleteTeam } = this.props;
+
+        deleteTeam(index);
     }
 
     onSort = (column) => (e) => {
         const direction = this.state.sort.column ? (this.state.sort.direction === 'asc' ? 'desc' : 'asc') : 'desc';
-        const sortedData = this.state.data.sort((a, b) => {
+        const sortedData = this.state.teamData.sort((a, b) => {
             if (column === 'teamName') {
                 const nameA = a.teamName.toUpperCase();
                 const nameB = b.teamName.toUpperCase();
@@ -43,7 +46,7 @@ class Table extends React.Component {
 
                 return 0;
             } else {
-                return a.teamDescription - b.teamDescription;
+                return a.teamDesc - b.teamDesc;
             }
         });
 
@@ -52,7 +55,7 @@ class Table extends React.Component {
         }
 
         this.setState({
-            data: sortedData,
+            teamData: sortedData,
             sort: {
                 column,
                 direction,
@@ -93,17 +96,17 @@ class Table extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.state.data.map((item, index) => {
+                    {this.state.teamData.map((item, index) => {
                         return (
-                            <tr>
+                            <tr key={index}>
                                 <td>{item.teamName}</td>
                                 <td>
                                     <div>
                                         <span>
-                                            {item.teamDescription}
+                                            {item.teamDesc}
                                         </span>
                                         <div>
-                                            <small><MdDelete /></small>
+                                            <small onClick={() => this.deleteTeam(item)}><MdDelete /></small>
                                             <small><MdShare /></small>
                                             <small><MdModeEdit /></small>
                                         </div>
@@ -119,4 +122,12 @@ class Table extends React.Component {
 
 }
 
-export default Table;
+const mapStateToProps = (state) => ({
+    data: state.data
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    deleteTeam: data => dispatch(FormHandler.deleteTeam(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);
