@@ -1,5 +1,5 @@
 import './TeamForm.scss';
-// import AxiosInstance from '../../providers/services/Api';
+import AxiosInstance from '../../providers/services/Api';
 import { SectionContainer, SectionContent, SectionHeader } from '../../shared/styles/SharedStyled';
 import { TeamFormContainer, TeamFormTitle, ChipInputStyled } from './TeamFormStyled';
 import { useState } from 'react';
@@ -7,19 +7,84 @@ import _ from 'underscore';
 import { Chip } from '@material-ui/core';
 import { MdAdd, MdClose } from 'react-icons/md';
 
-const positions = [
+const formations = [
     {
         firstRow: 3,
         seconnRow: 4,
         thirdRow: 3,
+        fourthRow: 0,
         id: '3-4-3'
+    },
+    {
+        firstRow: 3,
+        seconnRow: 2,
+        thirdRow: 2,
+        fourthRow: 3,
+        id: '3-2-2-3'
+    },
+    {
+        firstRow: 3,
+        seconnRow: 2,
+        thirdRow: 3,
+        fourthRow: 1,
+        id: '3-2-3-1'
+    },
+    {
+        firstRow: 3,
+        seconnRow: 5,
+        thirdRow: 2,
+        fourthRow: 0,
+        id: '3-5-2'
+    },
+    {
+        firstRow: 4,
+        seconnRow: 2,
+        thirdRow: 3,
+        fourthRow: 1,
+        id: '4-2-3-1'
+    },
+    {
+        firstRow: 4,
+        seconnRow: 3,
+        thirdRow: 1,
+        fourthRow: 1,
+        id: '4-3-1-1'
+    },
+    {
+        firstRow: 4,
+        seconnRow: 3,
+        thirdRow: 2,
+        fourthRow: 0,
+        id: '4-3-2'
+    },
+    {
+        firstRow: 4,
+        seconnRow: 4,
+        thirdRow: 2,
+        fourthRow: 0,
+        id: '4-4-2'
+    },
+    {
+        firstRow: 4,
+        seconnRow: 5,
+        thirdRow: 1,
+        fourthRow: 0,
+        id: '4-5-1'
+    },
+    {
+        firstRow: 5,
+        seconnRow: 4,
+        thirdRow: 1,
+        fourthRow: 0,
+        id: '5-4-1'
     }
 ]
 
 function TeamForm() {
     const [tags, setTags] = useState([]);
-    const [pos, setPos] = useState(null);
-    const [tes, setTes] = useState(0);
+    const [players, setPlayers] = useState([]);
+    const [playerSearch, setPlayerSearch] = useState('');
+    const [formation, setFormation] = useState(formations[0]);
 
     function addTeamTags(tag) {
         setTags([...tags, tag]);
@@ -29,10 +94,24 @@ function TeamForm() {
         setTags(_.without(tags, tag));
     }
 
-    // _.times(3, function (n) { console.log(n) })
+    function onPressEnter(event) {
+        if (event.key === 'Enter') {
+            AxiosInstance.get(`/players/search/${playerSearch}`).then((response) => {
+                let data = [];
 
-    function onSelectFormation() {
-        setPos(positions[tes]);
+                response.data.api.players.forEach(({ player_id, player_name, age, nationality }) => {
+                    let info = {};
+                    data.push(Object.assign(info, { player_id, player_name, age, nationality }));
+                });
+
+                setPlayers(data);
+            });
+        }
+    }
+
+    function onSelectFormation(event) {
+        const form = formations.find(f => f.id === event.target.value);
+        setFormation(form);
     }
 
     return (
@@ -120,13 +199,18 @@ function TeamForm() {
                         <div className="fields-row">
                             <div className="col">
                                 <div className="input-container">
-                                    <label>Formation</label>
+                                    <label>
+                                        Formation
+                                        <select value={formation.id} onChange={onSelectFormation}>
+                                            {formations.map((op, index) => (<option key={index} value={op.id}>{op.id}</option>))}
+                                        </select>
+                                    </label>
 
                                 </div>
 
                                 <div className="soccer-field">
                                     <div className="row soccer-field-row">
-                                        {pos && _.times(pos.firstRow, (i) => {
+                                        {formation && _.times(formation.firstRow, (i) => {
                                             return <div key={i} className="position-item">
                                                 <MdAdd style={{ color: '#fff' }} />
                                             </div>
@@ -134,7 +218,7 @@ function TeamForm() {
                                     </div>
 
                                     <div className="row soccer-field-row">
-                                        {pos && _.times(pos.seconnRow, (i) => {
+                                        {formation && _.times(formation.seconnRow, (i) => {
                                             return <div key={i} className="position-item">
                                                 <MdAdd style={{ color: '#fff' }} />
                                             </div>
@@ -142,28 +226,64 @@ function TeamForm() {
                                     </div>
 
                                     <div className="row soccer-field-row">
-                                        {pos && _.times(pos.thirdRow, (i) => {
+                                        {formation && _.times(formation.thirdRow, (i) => {
                                             return <div key={i} className="position-item">
                                                 <MdAdd style={{ color: '#fff' }} />
                                             </div>
                                         })}
                                     </div>
 
+                                    {formation.fourthRow  > 0 &&
+                                        <div className="row soccer-field-row">
+                                            {formation && _.times(formation.fourthRow, (i) => {
+                                                return <div key={i} className="position-item">
+                                                    <MdAdd style={{ color: '#fff' }} />
+                                                </div>
+                                            })}
+                                        </div>
+                                    }
+
+
                                     <div className="row soccer-field-row">
-                                        {pos && <div className="position-item">{pos.view}</div>}
+                                        {formation && <div className="position-item">{formation.view}</div>}
 
                                     </div>
                                 </div>
 
                                 <div className="input-container">
-                                    <button onClick={onSelectFormation}>Save</button>
+                                    <button>Save</button>
                                 </div>
                             </div>
 
                             <div className="col">
                                 <div className="input-container">
                                     <label htmlFor="teamSearchPlayer">Search player</label>
-                                    <input name="teamSearchPlayer" id="teamSearchPlayer" placeholder="Ronal" />
+                                    <input name="teamSearchPlayer" id="teamSearchPlayer" placeholder="Ronal" onChange={event => setPlayerSearch(event.target.value)} onKeyDown={onPressEnter} value={playerSearch} />
+                                </div>
+
+                                <div className="results">
+                                    {players.length > 0 && players.map(player => {
+                                        return (
+                                            <div className="result-card" key={player.id}>
+                                                <div>
+                                                    <div>
+                                                        <label>Name: </label>
+                                                        <span>{player.player_name}</span>
+                                                    </div>
+
+                                                    <div>
+                                                        <label>Nacionality: </label>
+                                                        <span>{player.nationality || '--//--'}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <label>Age: </label>
+                                                    <span>{player.age}</span>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </div>
